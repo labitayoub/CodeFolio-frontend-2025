@@ -2,6 +2,7 @@ import { FiHome, FiArrowLeft } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {
+    
   const navigate = useNavigate();
   
   return (
