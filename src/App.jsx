@@ -1,14 +1,44 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
+import Home from "./components/Home";
+import { isAuthenticated } from "./utils/auth";
+
+// Composant pour protéger les routes privées
+const ProtectedRoute = ({ children }) => {
+  return isAuthenticated() ? children : <Navigate to="/login" replace />;
+};
+
+// Composant pour rediriger si déjà connecté
+const PublicRoute = ({ children }) => {
+  return !isAuthenticated() ? children : <Navigate to="/" replace />;
+};
+
 function App() {
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600 underline">
-        Tailwind CSS is working! 🎨
-      </h1>
-      <p className="mt-4 text-gray-700">
-        React + Vite + Tailwind setup ✅
-      </p>
-    </div>
-  )
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-100">
+        <Routes>
+          <Route path="/login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+          <Route path="/register" element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          } />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

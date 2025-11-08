@@ -1,11 +1,67 @@
-# React + Vite
+# CodeFolio Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfolio personnel avec authentification GraphQL et gestion de projets.
 
-Currently, two official plugins are available:
+## 🚀 Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - Framework frontend
+- **Vite** - Build tool et dev server
+- **React Router** - Navigation
+- **GraphQL** - API communication
+- **Tailwind CSS** - Styling
+- **JWT** - Authentication
+
+## 📦 Installation
+
+```bash
+npm install
+```
+
+## ▶️ Lancement
+
+```bash
+npm run dev
+```
+
+Le projet sera accessible sur `http://localhost:5173`
+
+## 🔐 Authentification
+
+L'authentification utilise GraphQL avec JWT tokens :
+- **Inscription** : `/register`
+- **Connexion** : `/login`
+- **Page d'accueil** : `/` (protégée)
+
+Les utilisateurs sont enregistrés dans MongoDB via le backend GraphQL.
+
+## 📁 Structure
+
+```
+src/
+├── components/
+│   ├── Auth/          # Login & Register
+│   ├── Home.jsx       # Page d'accueil
+│   └── Project/       # Gestion des projets
+├── graphql/
+│   ├── mutations.js   # Mutations GraphQL
+│   └── queries.js     # Queries GraphQL
+├── utils/
+│   ├── auth.js        # Gestion JWT
+│   └── errorHandler.js
+└── App.jsx            # Routes et configuration
+```
+
+## 🛠️ Prochaines étapes
+
+- [ ] Gestion des projets (CRUD)
+- [ ] Gestion des compétences
+- [ ] Gestion des formations
+- [ ] Gestion des expériences
+- [ ] Profil utilisateur avec GET_CURRENT_USER
+
+## 📝 Backend
+
+Le backend GraphQL doit être lancé sur `http://localhost:4000`
 
 ## React Compiler
 

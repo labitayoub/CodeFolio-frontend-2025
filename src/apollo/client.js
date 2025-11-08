@@ -1,44 +1,55 @@
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
-import { SetContextLink } from "@apollo/client/link/context";
-import { ErrorLink  } from "@apollo/client/link/error";
+import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
 
-const httpLink = HttpLink({
-
+// Lien HTTP vers votre backend GraphQL
+const httpLink = new HttpLink({
     uri: 'http://localhost:4000/graphql',
     credentials: 'include',
-})
-
-
-const authLink = new SetContextLink(() => {
-  const token = localStorage.getItem('token');
-  const headers = {};
-
-  if (token) {
-    headers.authorization = `Bearer ${token}`;
-  }
-
-  return { headers };
 });
 
-// Gestion des erreurs
+// Ajouter le token JWT à chaque requête
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token');
+  
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  };
+});
 
-const errorLink = ErrorLink (({ graphQLErrors, networkError }) => {
+// Gestion des erreurs GraphQL et réseau
+const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    for (let err of graphQLErrors) {
-      console.error(`[GraphQL error]: ${err.message}`);
-      if (err.message.includes("Unauthorized")) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      console.error(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      );
+      
+      // Rediriger vers login si non autorisé
+      if (message.includes("Unauthorized") || message.includes("Not authenticated")) {
         localStorage.removeItem("token");
         window.location.href = "/login";
       }
-    }
+    });
   }
-  if (networkError) console.error(`[Network error]: ${networkError}`);
+  
+  if (networkError) {
+    console.error(`[Network error]: ${networkError}`);
+  }
 });
 
-// Création du client Apollo
+// Créer le client Apollo avec tous les liens
 const client = new ApolloClient({
-  link: errorLink.concat(authLink.concat(httpLink)),
+  link: from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  },
 });
 
 export default client;
