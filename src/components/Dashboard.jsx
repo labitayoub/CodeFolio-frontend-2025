@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { removeToken } from "../utils/auth";
 
-const Home = () => {
+const Dashboard = () => {
   const navigate = useNavigate();
   
   const handleLogout = () => {
@@ -47,4 +47,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

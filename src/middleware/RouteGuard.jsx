@@ -6,5 +6,5 @@ export const ProtectedRoute = ({ children }) => (
 );
 
 export const PublicRoute = ({ children }) => (
-  !isAuthenticated() ? children : <Navigate to="/" replace />
+  !isAuthenticated() ? children : <Navigate to="/dashboard" replace />
 );

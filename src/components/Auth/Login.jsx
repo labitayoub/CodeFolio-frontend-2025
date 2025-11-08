@@ -14,10 +14,9 @@ const Login = () => {
   // Utiliser Apollo Client useMutation
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      // Sauvegarder le token
       localStorage.setItem('token', data.login);
       toast.success('✅ Login réussi!');
-      navigate('/');
+      navigate('/dashboard');
     },
     onError: (err) => {
       toast.error(err.message || 'Erreur de connexion');
