@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { REGISTER_MUTATION } from '../../graphql/mutations';
 
 const Register = () => {
   const [formData, setFormData] = useState({ 
@@ -9,10 +11,27 @@ const Register = () => {
     password: '', 
     bio: '' 
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+
+  // Utiliser Apollo Client useMutation
+  const [register, { loading }] = useMutation(REGISTER_MUTATION, {
+    onCompleted: () => {
+      setSuccess('Inscription réussie ! Redirection...');
+      setTimeout(() => navigate('/login'), 2000);
+    },
+    onError: (err) => {
+      const errorMessage = err.message;
+      
+      // Gestion de l'erreur d'email déjà existant
+      if (errorMessage.includes('E11000') || errorMessage.includes('duplicate') || errorMessage.includes('déjà utilisé')) {
+        setError('Cet email est déjà utilisé. Veuillez utiliser un autre email ou vous connecter.');
+      } else {
+        setError(errorMessage);
+      }
+    }
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -24,53 +43,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+    setSuccess('');
     
-    try {
-      // Appel GraphQL direct avec fetch
-      const response = await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
-            mutation Register($nom: String!, $prenom: String!, $email: String!, $password: String!, $bio: String) {
-              register(nom: $nom, prenom: $prenom, email: $email, password: $password, bio: $bio) {
-                id
-                nom
-                prenom
-                email
-                bio
-              }
-            }
-          `,
-          variables: formData
-        })
-      });
-
-      const result = await response.json();
-      console.log('📤 Réponse backend:', result);
-      
-      if (result.errors) {
-        setError(result.errors[0].message);
-        setLoading(false);
-        return;
+    // Appel de la mutation avec les variables
+    register({
+      variables: {
+        ...formData,
+        email: formData.email.toLowerCase().trim()
       }
-
-      if (result.data && result.data.register) {
-        console.log('✅ Inscription réussie!');
-        setSuccess('Inscription réussie ! Redirection...');
-        setTimeout(() => {
-          navigate('/login');
-        }, 2000);
-      }
-    } catch (err) {
-      console.error('❌ Erreur inscription:', err);
-      setError('Erreur de connexion au serveur');
-      setLoading(false);
-    }
+    });
   };
 
   return (

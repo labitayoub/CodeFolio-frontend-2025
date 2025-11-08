@@ -1,14 +1,28 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { LOGIN_MUTATION } from '../../graphql/mutations';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Utiliser Apollo Client useMutation
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: (data) => {
+      // Sauvegarder le token
+      localStorage.setItem('token', data.login);
+      console.log('✅ Login réussi!');
+      navigate('/');
+    },
+    onError: (err) => {
+      setError(err.message || 'Erreur de connexion');
+    }
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -20,51 +34,15 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
     
-    try {
-      // Appel GraphQL direct avec fetch
-      const response = await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
-            mutation Login($email: String!, $password: String!) {
-              login(email: $email, password: $password)
-            }
-          `,
-          variables: {
-            email: formData.email,
-            password: formData.password
-          }
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.errors) {
-        setError(result.errors[0].message);
-        setLoading(false);
-        return;
+    // Appel de la mutation avec les variables
+    login({
+      variables: {
+        email: formData.email.toLowerCase().trim(),
+        password: formData.password
       }
-
-      if (result.data && result.data.login) {
-        // Sauvegarder le token
-        localStorage.setItem('token', result.data.login);
-        console.log('✅ Login réussi! Token:', result.data.login);
-        
-        // Rediriger
-        navigate('/');
-        window.location.reload();
-      }
-    } catch (err) {
-      console.error('❌ Erreur login:', err);
-      setError('Erreur de connexion au serveur');
-      setLoading(false);
-    }
+    });
   };
 
   return (
