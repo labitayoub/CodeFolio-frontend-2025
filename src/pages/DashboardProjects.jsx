@@ -2,18 +2,55 @@ import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Plus } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { GET_PROJECTS } from "../graphql/queries";
+import { GET_PROJECTS, GET_CURRENT_USER } from "../graphql/queries";
 import { CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT } from "../graphql/mutations";
 import Button from "../components/ui/Button";
 import Spinner from "../components/ui/Spinner";
+import ProjectCard from "../components/Projects/ProjectCard";
+import ProjectModal from "../components/Projects/ProjectModal";
 
 const DashboardProjects = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
   
+  const { data: userData } = useQuery(GET_CURRENT_USER);
   const { loading, data, refetch } = useQuery(GET_PROJECTS);
   const [createProject] = useMutation(CREATE_PROJECT);
   const [updateProject] = useMutation(UPDATE_PROJECT);
   const [deleteProject] = useMutation(DELETE_PROJECT);
+
+  const handleCreate = async (formData) => {
+    try {
+      await createProject({
+        variables: {
+          ...formData,
+          userId: userData?.getProfil?.id
+        }
+      });
+      toast.success("Projet créé !");
+      refetch();
+      setIsModalOpen(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleUpdate = async (formData) => {
+    try {
+      await updateProject({
+        variables: {
+          id: editingProject.id,
+          ...formData
+        }
+      });
+      toast.success("Projet modifié !");
+      refetch();
+      setIsModalOpen(false);
+      setEditingProject(null);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const handleDelete = async (id) => {
     if (confirm("Supprimer ce projet ?")) {
@@ -25,6 +62,16 @@ const DashboardProjects = () => {
         toast.error(error.message);
       }
     }
+  };
+
+  const openEditModal = (project) => {
+    setEditingProject(project);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingProject(null);
   };
 
   if (loading) return <Spinner />;
@@ -40,24 +87,29 @@ const DashboardProjects = () => {
       </div>
 
       {data?.projects?.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
-          <p className="text-lg mb-4">Aucun projet pour le moment</p>
+        <div className="text-center py-12 bg-white rounded-lg shadow-md">
+          <p className="text-lg text-gray-600 mb-4">Aucun projet pour le moment</p>
           <Button onClick={() => setIsModalOpen(true)}>Créer votre premier projet</Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data?.projects?.map((project) => (
-            <div key={project.id} className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-xl font-bold mb-2">{project.titre}</h3>
-              <p className="text-gray-600 mb-4">{project.description}</p>
-              <div className="flex gap-2">
-                <Button variant="outline" onClick={() => {}}>Modifier</Button>
-                <Button variant="danger" onClick={() => handleDelete(project.id)}>Supprimer</Button>
-              </div>
-            </div>
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onEdit={() => openEditModal(project)}
+              onDelete={() => handleDelete(project.id)}
+            />
           ))}
         </div>
       )}
+
+      <ProjectModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSubmit={editingProject ? handleUpdate : handleCreate}
+        project={editingProject}
+      />
     </div>
   );
 };
