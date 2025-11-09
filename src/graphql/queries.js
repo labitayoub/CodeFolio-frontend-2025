@@ -13,14 +13,16 @@ export const GET_CURRENT_USER = gql`
 `;
 
 // Query pour récupérer tous les projets
+// Query pour récupérer tous les projets
 export const GET_PROJECTS = gql`
   query GetProjects {
     projects {
       id
-      title
+      titre
       description
-      technologies
-      createdAt
+      urlGit
+      urlDemo
+      image
     }
   }
 `;
