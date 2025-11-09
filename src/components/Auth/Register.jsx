@@ -40,18 +40,20 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Appel de la mutation avec les variables
-    register({
-      variables: {
-        ...formData,
-    username: formData.username.toLowerCase().trim(),
-    email: formData.email.toLowerCase().trim()
-      }
-    });
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  register({
+    variables: {
+      nom: formData.nom,
+      prenom: formData.prenom,
+      username: formData.username.toLowerCase().trim(),
+      email: formData.email.toLowerCase().trim(),
+      password: formData.password,
+      bio: formData.bio
+    }
+  });
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

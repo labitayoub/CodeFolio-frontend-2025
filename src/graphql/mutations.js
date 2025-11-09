@@ -9,8 +9,8 @@ export const LOGIN_MUTATION = gql`
 
 // Mutation pour s'inscrire
 export const REGISTER_MUTATION = gql`
-  mutation Register($nom: String!, $prenom: String!, $email: String!, $password: String!, $bio: String) {
-    register(nom: $nom, prenom: $prenom, email: $email, password: $password, bio: $bio) {
+  mutation Register($nom: String!, $prenom: String!, $username: String!, $email: String!, $password: String!, $bio: String) {
+    register(nom: $nom, prenom: $prenom, username: $username, email: $email, password: $password, bio: $bio) {
       id
       nom
       prenom
@@ -20,6 +20,7 @@ export const REGISTER_MUTATION = gql`
     }
   }
 `;
+
 
 // Mutation pour se déconnecter
 export const LOGOUT_MUTATION = gql`
