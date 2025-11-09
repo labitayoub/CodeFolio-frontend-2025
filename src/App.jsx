@@ -23,13 +23,13 @@ const App = () => (
       {/* Routes dashboard protégées */}
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
         <Route index element={<Dashboard />} />
-        <Route path="/dashboard/project" element={<ProtectedRoute><DashboardProjects /></ProtectedRoute>} />
-        <Route path="/dashboard/experiences" element={<ProtectedRoute><DashboardExperiences /></ProtectedRoute>} />
-        <Route path="/dashboard/formations" element={<ProtectedRoute><DashboardFormations /></ProtectedRoute>} />
-        <Route path="/dashboard/skills" element={<ProtectedRoute><DashboardSkills /></ProtectedRoute>} />
-        <Route path="/dashboard/documents" element={<ProtectedRoute><DashboardDocuments /></ProtectedRoute>} />
-        <Route path="/dashboard/social" element={<ProtectedRoute><DashboardSocial /></ProtectedRoute>} />
-        <Route path="/dashboard/profile" element={<ProtectedRoute><DashboardProfile /></ProtectedRoute>} />
+        <Route path="project" element={<ProtectedRoute><DashboardProjects /></ProtectedRoute>} />
+        <Route path="experiences" element={<ProtectedRoute><DashboardExperiences /></ProtectedRoute>} />
+        <Route path="formations" element={<ProtectedRoute><DashboardFormations /></ProtectedRoute>} />
+        <Route path="skills" element={<ProtectedRoute><DashboardSkills /></ProtectedRoute>} />
+        <Route path="documents" element={<ProtectedRoute><DashboardDocuments /></ProtectedRoute>} />
+        <Route path="social" element={<ProtectedRoute><DashboardSocial /></ProtectedRoute>} />
+        <Route path="profile" element={<ProtectedRoute><DashboardProfile /></ProtectedRoute>} />
       </Route>
       {/* Redirections */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
