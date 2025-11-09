@@ -57,9 +57,6 @@ const DocumentModal = ({ isOpen, onClose, onSubmit, document }) => {
             <option value="CV">CV</option>
             <option value="Photo de profil">Photo de profil</option>
             <option value="Cover de profil">Cover de profil</option>
-            <option value="Certificat">Certificat</option>
-            <option value="Diplôme">Diplôme</option>
-            <option value="Autre">Autre</option>
           </select>
         </div>
 
