@@ -42,14 +42,26 @@ const DocumentModal = ({ isOpen, onClose, onSubmit, document }) => {
       title={document ? "Modifier le document" : "Ajouter un document"}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Nom du document"
-          name="nom"
-          value={formData.nom}
-          onChange={handleChange}
-          placeholder="CV, Certificat..."
-          required
-        />
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Type de document <span className="text-red-500">*</span>
+          </label>
+          <select
+            name="nom"
+            value={formData.nom}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
+            <option value="">Sélectionner un type</option>
+            <option value="CV">CV</option>
+            <option value="Photo de profil">Photo de profil</option>
+            <option value="Cover de profil">Cover de profil</option>
+            <option value="Certificat">Certificat</option>
+            <option value="Diplôme">Diplôme</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
 
         <Input
           label="URL du document"
