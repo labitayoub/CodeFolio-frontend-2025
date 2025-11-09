@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client';
 // Query pour portfolio public (visiteur)
 export const GET_PORTFOLIO_BY_USERNAME = gql`
   query GetPortfolioByUsername($username: String!) {
