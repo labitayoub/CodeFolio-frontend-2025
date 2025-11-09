@@ -1,21 +1,40 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Dashboard from "./components/Dashboard";
 import NotFound from "./components/NotFound";
 import { ProtectedRoute, PublicRoute } from "./middleware/RouteGuard";
+import DashboardLayout from "./components/layout/DashboardLayout";
+import Dashboard from "./pages/Dashboard";
+import DashboardProjects from "./pages/DashboardProjects";
+import DashboardExperiences from "./pages/DashboardExperiences";
+import DashboardFormations from "./pages/DashboardFormations";
+import DashboardSkills from "./pages/DashboardSkills";
+import DashboardDocuments from "./pages/DashboardDocuments";
+import DashboardSocial from "./pages/DashboardSocial";
+import DashboardProfile from "./pages/DashboardProfile";
 
 const App = () => (
   <BrowserRouter>
-    <div className="min-h-screen bg-gray-100">
-      <Routes>
-        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="*" element={<NotFound/>} />
-      </Routes>
-    </div>
+    <Routes>
+      {/* Routes publiques */}
+      <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+      <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+      {/* Routes dashboard protégées */}
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
+        <Route index element={<Dashboard />} />
+        <Route path="/dashboard/project" element={<ProtectedRoute><DashboardProjects /></ProtectedRoute>} />
+        <Route path="/dashboard/experiences" element={<ProtectedRoute><DashboardExperiences /></ProtectedRoute>} />
+        <Route path="/dashboard/formations" element={<ProtectedRoute><DashboardFormations /></ProtectedRoute>} />
+        <Route path="/dashboard/skills" element={<ProtectedRoute><DashboardSkills /></ProtectedRoute>} />
+        <Route path="/dashboard/documents" element={<ProtectedRoute><DashboardDocuments /></ProtectedRoute>} />
+        <Route path="/dashboard/social" element={<ProtectedRoute><DashboardSocial /></ProtectedRoute>} />
+        <Route path="/dashboard/profile" element={<ProtectedRoute><DashboardProfile /></ProtectedRoute>} />
+      </Route>
+      {/* Redirections */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   </BrowserRouter>
 );
 
