@@ -1,10 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
-import Dashboard from "./components/Dashboard";
 import NotFound from "./components/NotFound";
 import { ProtectedRoute, PublicRoute } from "./middleware/RouteGuard";
-import DashboardLayout from "./components/layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import DashboardProjects from "./pages/DashboardProjects";
 import DashboardExperiences from "./pages/DashboardExperiences";
