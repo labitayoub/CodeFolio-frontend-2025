@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import NotFound from "./components/NotFound";
 import { ProtectedRoute, PublicRoute } from "./middleware/RouteGuard";
 import Dashboard from "./pages/Dashboard";
+import DashboardLayout from "./components/layout/DashboardLayout";
 import DashboardProjects from "./pages/DashboardProjects";
 import DashboardExperiences from "./pages/DashboardExperiences";
 import DashboardFormations from "./pages/DashboardFormations";
@@ -19,9 +20,9 @@ const App = () => (
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
       {/* Routes dashboard protégées */}
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
+      <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
         <Route index element={<Dashboard />} />
-        <Route path="project" element={<ProtectedRoute><DashboardProjects /></ProtectedRoute>} />
+        <Route path="projects" element={<ProtectedRoute><DashboardProjects /></ProtectedRoute>} />
         <Route path="experiences" element={<ProtectedRoute><DashboardExperiences /></ProtectedRoute>} />
         <Route path="formations" element={<ProtectedRoute><DashboardFormations /></ProtectedRoute>} />
         <Route path="skills" element={<ProtectedRoute><DashboardSkills /></ProtectedRoute>} />

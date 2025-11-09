@@ -7,7 +7,8 @@ import { REGISTER_MUTATION } from '../../graphql/mutations';
 const Register = () => {
   const [formData, setFormData] = useState({ 
     nom: '', 
-    prenom: '', 
+    prenom: '',
+    username: '', 
     email: '', 
     password: '', 
     bio: '' 
@@ -46,7 +47,8 @@ const Register = () => {
     register({
       variables: {
         ...formData,
-        email: formData.email.toLowerCase().trim()
+    username: formData.username.toLowerCase().trim(),
+    email: formData.email.toLowerCase().trim()
       }
     });
   };
@@ -90,6 +92,25 @@ const Register = () => {
               disabled={loading}
             />
           </div>
+<div>
+  <label className="block text-gray-700 text-sm font-bold mb-2">
+    Nom d'utilisateur *
+  </label>
+  <input
+    type="text"
+    name="username"
+    value={formData.username}
+    onChange={handleChange}
+    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    placeholder="johndoe"
+    required
+    disabled={loading}
+  />
+  <p className="text-xs text-gray-500 mt-1">
+    Votre portfolio sera accessible sur : /{formData.username || 'username'}
+  </p>
+</div>
+
 
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">

@@ -14,6 +14,7 @@ export const REGISTER_MUTATION = gql`
       id
       nom
       prenom
+      username
       email
       bio
     }
@@ -26,6 +27,40 @@ export const LOGOUT_MUTATION = gql`
     logout {
       success
       message
+    }
+  }
+`;
+// Projects
+export const CREATE_PROJECT = gql`
+  mutation CreateProject($titre: String!, $description: String!, $urlGit: String!, $urlDemo: String!, $image: String!, $userId: ID!) {
+    createProject(titre: $titre, description: $description, urlGit: $urlGit, urlDemo: $urlDemo, image: $image, userId: $userId) {
+      id
+      titre
+      description
+      urlGit
+      urlDemo
+      image
+    }
+  }
+`;
+
+export const UPDATE_PROJECT = gql`
+  mutation UpdateProject($id: ID!, $titre: String, $description: String, $urlGit: String, $urlDemo: String, $image: String) {
+    updateProject(id: $id, titre: $titre, description: $description, urlGit: $urlGit, urlDemo: $urlDemo, image: $image) {
+      id
+      titre
+      description
+      urlGit
+      urlDemo
+      image
+    }
+  }
+`;
+
+export const DELETE_PROJECT = gql`
+  mutation DeleteProject($id: ID!) {
+    deleteProject(id: $id) {
+      id
     }
   }
 `;
