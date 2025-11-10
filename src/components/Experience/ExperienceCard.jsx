@@ -1,6 +1,7 @@
 import { Edit, Trash2, Briefcase } from "lucide-react";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
+import { formatDate } from "../../utils/dateUtils";
 
 const ExperienceCard = ({ experience, onEdit, onDelete }) => {
   return (
@@ -13,7 +14,7 @@ const ExperienceCard = ({ experience, onEdit, onDelete }) => {
           <h3 className="text-lg font-bold text-gray-800">{experience.role}</h3>
           <p className="text-gray-600">{experience.company}</p>
           <p className="text-sm text-gray-500">
-            {experience.startDate} - {experience.endDate || "Présent"}
+            {formatDate(experience.startDate)} - {experience.endDate ? formatDate(experience.endDate) : "Présent"}
           </p>
         </div>
       </div>

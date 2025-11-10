@@ -1,20 +1,10 @@
 import { Briefcase } from "lucide-react";
+import { formatDate } from "../../utils/dateUtils";
 
 const ExperienceTimeline = ({ experiences }) => {
   if (!experiences || experiences.length === 0) return null;
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "Présent";
-    
-    // Si c'est un timestamp (nombre)
-    if (!isNaN(dateString)) {
-      const date = new Date(parseInt(dateString));
-      return date.toISOString().split('T')[0];
-    }
-    
-    // Si c'est déjà une date ISO
-    return dateString.split('T')[0];
-  };
+
 
   return (
     <section className="py-16 bg-gray-50">
@@ -30,7 +20,7 @@ const ExperienceTimeline = ({ experiences }) => {
                 <h3 className="text-xl font-bold text-gray-800">{exp.role}</h3>
                 <p className="text-gray-600">{exp.company}</p>
                 <p className="text-sm text-gray-500 mt-1">
-                  {formatDate(exp.startDate)} - {formatDate(exp.endDate)}
+                  {formatDate(exp.startDate)} - {exp.endDate ? formatDate(exp.endDate) : "Présent"}
                 </p>
                 {exp.description && (
                   <p className="text-gray-700 mt-3">{exp.description}</p>

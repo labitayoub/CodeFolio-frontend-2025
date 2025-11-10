@@ -14,15 +14,20 @@ const DashboardExperiences = () => {
   const [editingExperience, setEditingExperience] = useState(null);
   
   const { loading, data, refetch } = useQuery(GET_EXPERIENCES);
-  const [createExperience] = useMutation(CREATE_EXPERIENCE);
-  const [updateExperience] = useMutation(UPDATE_EXPERIENCE);
-  const [deleteExperience] = useMutation(DELETE_EXPERIENCE);
+  const [createExperience] = useMutation(CREATE_EXPERIENCE, {
+    refetchQueries: [{ query: GET_EXPERIENCES }]
+  });
+  const [updateExperience] = useMutation(UPDATE_EXPERIENCE, {
+    refetchQueries: [{ query: GET_EXPERIENCES }]
+  });
+  const [deleteExperience] = useMutation(DELETE_EXPERIENCE, {
+    refetchQueries: [{ query: GET_EXPERIENCES }]
+  });
 
   const handleCreate = async (formData) => {
     try {
       await createExperience({ variables: formData });
       toast.success("Expérience ajoutée !");
-      refetch();
       setIsModalOpen(false);
     } catch (error) {
       toast.error(error.message);
@@ -38,7 +43,6 @@ const DashboardExperiences = () => {
         }
       });
       toast.success("Expérience modifiée !");
-      refetch();
       setIsModalOpen(false);
       setEditingExperience(null);
     } catch (error) {
@@ -51,7 +55,6 @@ const DashboardExperiences = () => {
       try {
         await deleteExperience({ variables: { id } });
         toast.success("Expérience supprimée !");
-        refetch();
       } catch (error) {
         toast.error(error.message);
       }

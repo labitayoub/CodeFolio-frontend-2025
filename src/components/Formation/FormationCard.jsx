@@ -1,6 +1,7 @@
 import { Edit, Trash2, GraduationCap } from "lucide-react";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
+import { formatDate } from "../../utils/dateUtils";
 
 const FormationCard = ({ formation, onEdit, onDelete }) => {
   return (
@@ -14,7 +15,7 @@ const FormationCard = ({ formation, onEdit, onDelete }) => {
           <p className="text-gray-600">{formation.ecole}</p>
           <p className="text-sm text-gray-500">{formation.localisation}</p>
           <p className="text-sm text-gray-500">
-            {formation.dateDebut} - {formation.dateFinal}
+            {formatDate(formation.dateDebut)} - {formatDate(formation.dateFinal)}
           </p>
         </div>
       </div>

@@ -1,20 +1,10 @@
 import { GraduationCap } from "lucide-react";
+import { formatDate } from "../../utils/dateUtils";
 
 const FormationsSection = ({ formations }) => {
   if (!formations || formations.length === 0) return null;
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    
-    // Si c'est un timestamp (nombre)
-    if (!isNaN(dateString)) {
-      const date = new Date(parseInt(dateString));
-      return date.toISOString().split('T')[0];
-    }
-    
-    // Si c'est déjà une date ISO
-    return dateString.split('T')[0];
-  };
+
 
   return (
     <section className="py-16 bg-white">
