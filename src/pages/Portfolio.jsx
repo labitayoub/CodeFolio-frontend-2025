@@ -40,7 +40,7 @@ const Portfolio = () => {
       <SocialLinks social={social} />
       
       <footer className="bg-gray-800 text-white py-8 text-center">
-        <p>© 2024 {user.prenom} {user.nom} - Portfolio</p>
+        <p>© 2025 {user.prenom} {user.nom} - Portfolio</p>
       </footer>
     </div>
   );

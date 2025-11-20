@@ -5,6 +5,6 @@ export const ProtectedRoute = ({ children }) => (
   isAuthenticated() ? children : <Navigate to="/login" replace />
 );
 
-export const PublicRoute = ({ children }) => (
+export const PublicRoute = ({ children }) => (   
   !isAuthenticated() ? children : <Navigate to="/dashboard" replace />
 );

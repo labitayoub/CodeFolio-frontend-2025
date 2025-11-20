@@ -16,8 +16,9 @@ import Portfolio from "./pages/Portfolio";
 import Home from "./pages/Home";
 
 const App = () => (
-  <BrowserRouter>
-    <Routes>
+  <BrowserRouter> {/*Fournit le contexte de routing*/}
+    <Routes> {/*Sélectionne la route matchant l'URL*/}
+    
       {/* Routes publiques */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
